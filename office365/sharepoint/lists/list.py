@@ -110,6 +110,35 @@ class List(SecurableObject):
             self.rootFolder.ensure_property("ServerRelativeUrl", _resolve_folder_url)
         return item
 
+    def recycle_item_by_property(self, list_item_filter, or_filter=False, items=None):
+        """
+        Moves list item to Recycle Bin by meeting filter criteria.
+
+         :param or_filter: removes list item if any of properties satisfy
+         :type or_filter: bool
+
+         :param list_item_filter: dictionary with properties by which you want to remove item
+         :type list_item_filter: dict
+
+         :type items: ListItemCollection
+         """
+
+        filter_dict = list_item_filter.copy()
+        for k, v in filter_dict.items():
+            if not isinstance(v, list):
+                filter_dict[k] = [v]
+
+        if not items:
+            items = self.items
+            if not self.items:
+                self.context.load(items)
+                self.context.execute_query()
+
+        func = any if or_filter else all
+        for item in items:
+            if func(item.get_property(k) in v_list for k, v_list in filter_dict.items()):
+                item.recycle()
+
     def get_item_by_id(self, item_id):
         """Returns the list item with the specified list item identifier.
 
