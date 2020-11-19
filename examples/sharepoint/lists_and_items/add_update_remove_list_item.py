@@ -30,13 +30,14 @@ ctx.execute_query()
 
 
 # Move item to recycle bin.
-# Remove when item property meets one of the conditions Title or version, version might be either 2 or 3
+# Remove when item property meets one of the conditions Title or Announcements,
+# Announcements might be either Hi or Hello
 target_list.recycle_item_by_property({"Title": "my_title",
-                                      "version": ["2", "3"]}, or_filter=True)
+                                      "Announcements": ["Hi", "Hello"]}, or_filter=True)
 
-# Recycle when both conditions meet. Title is my_title and build_date is either "2020-11-17" or "2020-11-18"
+# Recycle when both conditions meet. Title is my_title and Date is either "2020-11-17" or "2020-11-18"
 target_list.recycle_item_by_property({"Title": "my_title",
-                                      "build_date": ["2020-11-17", "2020-11-18"]}, or_filter=False)
+                                      "Date": ["2020-11-17", "2020-11-18"]}, or_filter=False)
 ctx.execute_query()
 
 
